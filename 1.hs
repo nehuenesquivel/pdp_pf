@@ -14,7 +14,7 @@ xt8088 = Microprocessor {
 	programCounter = 0,
     lastErrorMessage = ""
 }
-{- 3.2.1.* -}
+{- 3.2.1. -}
 nop microprocessor = Microprocessor {
 	dataMemory = dataMemory microprocessor,
 	accumulatorA = accumulatorA microprocessor,
@@ -22,7 +22,7 @@ nop microprocessor = Microprocessor {
 	programCounter = programCounter microprocessor + 1,
     lastErrorMessage = lastErrorMessage microprocessor
 }
-{- 3.2.2. -}
+{- 3.2.2.* -}
 -- (nop.nop.nop) xt8088
 {- 3.3.1 -}
 lodv value microprocessor = Microprocessor {
