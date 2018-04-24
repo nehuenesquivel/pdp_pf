@@ -12,9 +12,9 @@ data Microprocesador = Microprocesador {memoria :: Posiciones,
 				mensajeError :: String} deriving Show
 
 
-xt8088 = Microprocesador {memoria = [1,42,85],
-			acumuladorA = 10,
-			acumuladorB = 2,
+xt8088 = Microprocesador {memoria = [],
+			acumuladorA = 0,
+			acumuladorB = 0,
 			programCounter = 0,
 			mensajeError = ""}
 
@@ -31,7 +31,7 @@ nop microprocesador = Microprocesador {memoria = memoria microprocesador,
 
 {- Desde la consola, modele un programa que haga avanzar tres posiciones el program counter.
 
- > nop(nop(nop xt8088))
+ > (nop.nop.nop) xt8088
  Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 0, programCounter = 3, mensajeError = ""}
 
 Interviene el concepto de composición de funciones -}
@@ -43,19 +43,19 @@ Interviene el concepto de composición de funciones -}
 lodv valor microprocesador = Microprocesador {memoria = memoria microprocesador,
 			acumuladorA = valor,
 			acumuladorB = acumuladorB microprocesador,
-			programCounter = incrementarPC microprocesador,
+			programCounter = programCounter microprocesador,
 			mensajeError = mensajeError microprocesador}
 
 swap microprocesador = Microprocesador {memoria = memoria microprocesador,
 			acumuladorA = acumuladorB microprocesador,
 			acumuladorB = acumuladorA microprocesador,
-			programCounter = incrementarPC microprocesador,
+			programCounter = programCounter microprocesador,
 			mensajeError = mensajeError microprocesador}
 
 add microprocesador = Microprocesador {memoria = memoria microprocesador,
 			acumuladorA = acumuladorA microprocesador + acumuladorB microprocesador,
 			acumuladorB = 0,
-			programCounter = incrementarPC microprocesador,
+			programCounter = programCounter microprocesador,
 			mensajeError = mensajeError microprocesador}
 
 {- Implementar un programa que permita sumar 10 + 22
@@ -77,29 +77,31 @@ Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter
 
 -- Punto 4
 
-{-divide microprocesador | acumuladorB microprocesador == 0 = Microprocesador {memoria = memoria microprocesador,
+lala = Microprocesador {memoria = [2,4,5,9], acumuladorA = 32, acumuladorB = 2, programCounter = 4, mensajeError = ""}
+
+divide microprocesador | acumuladorB microprocesador == 0 = Microprocesador {memoria = memoria microprocesador,
 								acumuladorA = acumuladorA microprocesador,
 								acumuladorB = acumuladorB microprocesador,
-								programCounter = incrementarPC microprocesador,
+								programCounter = programCounter microprocesador,
 								mensajeError = "Division by zero"}
 			| otherwise = Microprocesador {memoria = memoria microprocesador,
-						acumuladorA = acumuladorA microprocesador / acumuladorB microprocesador,
+						acumuladorA = div (acumuladorA microprocesador)(acumuladorB microprocesador),
 						acumuladorB = 0,
-						programCounter = incrementarPC microprocesador,
+						programCounter = programCounter microprocesador,
 						mensajeError = mensajeError microprocesador}
 
 
--}
 
-sacarElementoPosicion addr memoria = memoria !! (addr - 1)
 
-{-lod addr microprocesador = Microprocesador {memoria = memoria microprocesador,
-			acumuladorA = sacarElementoPosicion addr memoria microprocesador,
+sacarElementoPosicion direccion memoria = memoria !! (direccion - 1)
+
+lod direccion microprocesador = Microprocesador {memoria = memoria microprocesador,
+			acumuladorA = sacarElementoPosicion direccion (memoria microprocesador),
 			acumuladorB = acumuladorB microprocesador,
 			programCounter = incrementarPC microprocesador,
 			mensajeError = mensajeError microprocesador}
 
--}
+
 
 
 
