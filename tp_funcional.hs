@@ -101,7 +101,7 @@ Microprocesador {memoria = [2,0], acumuladorA = 2, acumuladorB = 0, programCount
 
 {- Casos de prueba
 
-Todas las capturas se encuentran en un archivo llamado casos_de_prueba.xlsx
+Todas las capturas se encuentran en un archivo llamado casos_de_prueba.docx
 -}
 
 fp20 = Microprocesador {memoria = [],
