@@ -23,7 +23,7 @@ lodv value microprocessor = microprocessor {accumulatorA = value}
 swap microprocessor = microprocessor {accumulatorA = accumulatorB microprocessor,accumulatorB = accumulatorA microprocessor}
 add microprocessor = microprocessor {accumulatorA = accumulatorA microprocessor + accumulatorB microprocessor,accumulatorB = 0}
 {- 3.3.2. -}
-execute operation = (nop.operation)
+execute operation = nop.operation
 -- (execute add.execute (lodv 22).execute swap.execute (lodv 10)) xt8088
 {- 3.4.1 -}
 divide microprocessor | accumulatorB microprocessor == 0 = microprocessor {lastErrorMessage = "DIVISION BY ZERO"}
@@ -39,4 +39,3 @@ lod1 address dataMemory | null(dataMemory) = 0
                         | otherwise = lod1 (address - 1) (tail dataMemory)
 {- 3.4.2.* -}
 -- (divide.nop.(lod 1).nop.swap.nop.(lod 2).nop.(str 2 0).nop.(str 1 2).nop) xt8088
-
