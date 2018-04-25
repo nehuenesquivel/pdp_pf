@@ -37,5 +37,5 @@ lod address microprocessor = microprocessor {accumulatorA = lod1 address (dataMe
 lod1 address dataMemory | null(dataMemory) = 0
                         | address < 2 = head dataMemory
                         | otherwise = lod1 (address - 1) (tail dataMemory)
-{- 3.4.2.* -}
--- (divide.nop.(lod 1).nop.swap.nop.(lod 2).nop.(str 2 0).nop.(str 1 2).nop) xt8088
+{- 3.4.2. -}
+-- (execute divide.execute (lod 1).execute swap.execute (lod 2).execute (str 2 0).execute (str 1 2)) xt8088
