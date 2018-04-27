@@ -27,14 +27,19 @@ xt8088 = Microprocesador {memoria = [],
 
 -- 3.2 Punto 2
 
---incrementarPC microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
-
 -- 3.2.1
-nop microprocesador = microprocesador {programCounter = programCounter microprocesador + 1}
+
+
+
+--ejecutar nop = nop
+ejecutar operacion = nop.operacion
+
+
+nop microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
 
 {- 3.2.2 Desde la consola, modele un programa que haga avanzar tres posiciones el program counter.
  
-> (nop.nop.nop) xt8088
+> (ejecutar nop.ejecutar nop.ejecutar nop) xt8088
 Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 0, programCounter = 3, mensajeError = ""}
 
 Interviene el concepto de composición de funciones -}
@@ -43,8 +48,6 @@ Interviene el concepto de composición de funciones -}
 -- 3.3 Punto 3
 
 ---3.3.1
-
-ejecutar operacion = nop.operacion
 
 lodv valor microprocesador = microprocesador {acumuladorA = valor}
 
@@ -72,8 +75,7 @@ Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter
 
 divide microprocesador | acumuladorB microprocesador == 0 = microprocesador {mensajeError = "DIVISION BY ZERO"}
                        | otherwise = microprocesador {acumuladorA = div (acumuladorA microprocesador)(acumuladorB microprocesador),
-        	                                            acumuladorB = 0,
-                                                      mensajeError = ""
+        	                                      acumuladorB = 0                                              
                                                      }
 				
 
@@ -86,8 +88,8 @@ str direccion valor microprocesador = microprocesador {memoria = guardarValorEnP
 
 
 sacarElementoPosicion direccion memoria  | null(memoria) = 0
-                                         | direccion < 2 = head memoria
-                                         | otherwise = sacarElementoPosicion (direccion - 1) (tail memoria)
+                                     	 | otherwise = memoria !! (direccion - 1)
+
 
 lod direccion microprocesador = microprocesador {acumuladorA = sacarElementoPosicion direccion (memoria microprocesador)}
 
