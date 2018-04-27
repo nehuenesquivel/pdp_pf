@@ -79,10 +79,7 @@ divide microprocesador | acumuladorB microprocesador == 0 = microprocesador {men
                                                      }
 				
 
-guardarValorEnPosicion direccion valor memoria  | direccion < 2 && (null(memoria) || null(tail memoria)) = [valor]
-                                                | direccion < 2 = [valor] ++ tail memoria
-                                                | null(memoria) = [0] ++ guardarValorEnPosicion (direccion - 1) valor memoria
-                                                | otherwise = [head memoria] ++ guardarValorEnPosicion (direccion - 1) valor (tail memoria)       
+guardarValorEnPosicion direccion valor memoria = take (direccion - 1) memoria ++ [valor] ++ drop direccion memoria
 
 str direccion valor microprocesador = microprocesador {memoria = guardarValorEnPosicion direccion valor (memoria microprocesador)}
 
