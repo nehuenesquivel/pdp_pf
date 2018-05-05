@@ -30,12 +30,16 @@ xt8088 = Microprocesador {memoria = [],
 -- 3.2.1
 
 
+ejecutar :: (Microprocesador -> Microprocesador) -> Microprocesador -> Microprocesador
+ejecutar operacion = nopR.operacion
 
---ejecutar nop = nop
-ejecutar operacion = nop.operacion
 
+nop :: Microprocesador -> Microprocesador
+nop = id
 
-nop microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
+nopR :: Microprocesador -> Microprocesador
+nopR microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
+
 
 {- 3.2.2 Desde la consola, modele un programa que haga avanzar tres posiciones el program counter.
  
@@ -49,14 +53,17 @@ Interviene el concepto de composición de funciones -}
 
 ---3.3.1
 
+lodv :: Int -> Microprocesador -> Microprocesador
 lodv valor microprocesador = microprocesador {acumuladorA = valor}
 
+swap :: Microprocesador -> Microprocesador
 swap microprocesador = microprocesador {acumuladorA = acumuladorB microprocesador,
               	                        acumuladorB = acumuladorA microprocesador
                                        }
-		
+
+add :: Microprocesador -> Microprocesador		
 add microprocesador = microprocesador {acumuladorA = acumuladorA microprocesador + acumuladorB microprocesador,
-		                                   acumuladorB = 0 
+		                       acumuladorB = 0 
                                       }
 
   
@@ -73,21 +80,26 @@ Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter
 
 -- 3.4.1
 
+divide :: Microprocesador -> Microprocesador
 divide microprocesador | acumuladorB microprocesador == 0 = microprocesador {mensajeError = "DIVISION BY ZERO"}
                        | otherwise = microprocesador {acumuladorA = div (acumuladorA microprocesador)(acumuladorB microprocesador),
         	                                      acumuladorB = 0                                              
                                                      }
 				
 
+guardarValorEnPosicion :: Int -> Int -> Posiciones -> Posiciones
 guardarValorEnPosicion direccion valor memoria = take (direccion - 1) memoria ++ [valor] ++ drop direccion memoria
 
+str :: Int -> Int -> Microprocesador -> Microprocesador
 str direccion valor microprocesador = microprocesador {memoria = guardarValorEnPosicion direccion valor (memoria microprocesador)}
 
 
-sacarElementoPosicion direccion memoria  | null(memoria) = 0
-                                     	 | otherwise = memoria !! (direccion - 1)
+sacarElementoPosicion :: Int -> Posiciones -> Int
+sacarElementoPosicion direccion memoria | null(memoria) = 0
+                                     	  | otherwise = memoria !! (direccion - 1)
 
 
+lod :: Int -> Microprocesador -> Microprocesador
 lod direccion microprocesador = microprocesador {acumuladorA = sacarElementoPosicion direccion (memoria microprocesador)}
 
 {- 3.4.2 Desde la consola, modele un programa que intente dividir 2 por 0
