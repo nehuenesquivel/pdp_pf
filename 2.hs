@@ -16,14 +16,14 @@ data Microprocessor = Microprocessor {
 --     programCounter = 0,
 --     lastErrorMessage = ""
 -- }
-xt8088 = Microprocessor {
-    dataMemory = [],
-    instructionMemory = [str 1 2,str 2 0,lod 2,swap,lod 1,divide],
-    accumulatorA = 0,
-    accumulatorB = 0,
-    programCounter = 0,
-    lastErrorMessage = ""
-}
+-- xt8088 = Microprocessor {
+--     dataMemory = [],
+--     instructionMemory = [str 1 2,str 2 0,lod 2,swap,lod 1,divide],
+--     accumulatorA = 0,
+--     accumulatorB = 0,
+--     programCounter = 0,
+--     lastErrorMessage = ""
+-- }
 {- 3.2.2.* -}
 -- foldl (flip execute) microprocessor (instructionMemory microprocessor)
 {- 3.3.3. -}
