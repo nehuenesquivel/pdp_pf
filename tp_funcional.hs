@@ -182,7 +182,12 @@ fp20 = Microprocesador {memoria = [],
 
 --- 3.4 Punto 4: Depuración de un programa
 
-
+depurar microprocesador = filter sacarInnecesarias (instrucciones microprocesador)
+sacarInnecesarias operacion | acumuladorA (ejecutar operacion microprocesador) == 0 = False
+                            | acumuladorB (ejecutar operacion microprocesador) == 0 = False
+                            | memoria (ejecutar operacion microprocesador) == [] = False
+                            | head (memoria (ejecutar operacion microprocesador)) == 0 = False
+                            | otherwise = True
 
 --- 3.5 Punto 5: Memoria ordenada
 
@@ -221,3 +226,8 @@ xt9000 = Microprocesador {memoria = [0..],
                          } 
 
 -- ¿Qué sucede al querer cargar y ejecutar el programa que suma 10 y 22 en el procesador con memoria infinita?
+-- Se queda loopeando y nunca termina de ejecutar la memoria.
+
+
+-- ¿Y si queremos saber si la memoria está ordenada?
+-- Se queda evaluando todos los valores y nunca da una respuesta.
