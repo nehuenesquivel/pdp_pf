@@ -8,7 +8,7 @@ import Text.Show.Functions
 type Posiciones = [Int]
 
 data Microprocesador = Microprocesador {memoria :: Posiciones,
-					instrucciones :: [Microprocesador -> Microprocesador],
+					                              instrucciones :: [Microprocesador -> Microprocesador],
                                         acumuladorA :: Int,
                                         acumuladorB :: Int,
                                         programCounter :: Int,
@@ -35,7 +35,8 @@ xt8088 = Microprocesador {memoria = [],
 
 
 ejecutar :: (Microprocesador -> Microprocesador) -> Microprocesador -> Microprocesador
-ejecutar operacion = nopR.operacion
+ejecutar operacion microprocesador| mensajeError microprocesador /= "" = microprocesador
+                                  | otherwise = (operacion.nopR) microprocesador
 
 
 nop :: Microprocesador -> Microprocesador
@@ -128,12 +129,6 @@ Todas las capturas se encuentran en un archivo llamado casos_de_prueba.docx
 
 -}
 
-at8086 = Microprocesador {memoria = [1..20],
-                          acumuladorA = 7,
-                          acumuladorB = 24,
-                          programCounter = 0,
-                          mensajeError = ""
-                       }
  
 
  
@@ -146,7 +141,7 @@ at8086 = Microprocesador {memoria = [1..20],
 -- Representar la suma de 10 y 22
 
 xt8088 = Microprocesador {memoria = [],
-			  instrucciones = [lodv 10,swap,lodv 22,add],
+			                    instrucciones = [lodv 10,swap,lodv 22,add],
                           acumuladorA = 0,
                           acumuladorB = 0,
                           programCounter = 0,
@@ -155,14 +150,15 @@ xt8088 = Microprocesador {memoria = [],
 
 -- Representar la división de 2 por 0
 
-xt8088 = Microprocesador {memoria = [],
-			  instrucciones = [str 1 2,str 2 0,lod 2,swap,lod 1,div],
+{-xt8088 = Microprocesador {memoria = [],
+			                    instrucciones = [str 1 2,str 2 0,lod 2,swap,lod 1,div],
                           acumuladorA = 0,
                           acumuladorB = 0,
                           programCounter = 0,
                           mensajeError = ""
                          } 
 
+-}
  
 -- 3.2 Punto 2: Ejecución de un programa.
 
@@ -171,9 +167,12 @@ xt8088 = Microprocesador {memoria = [],
 
 --- 3.3 Punto 3: IFNZ
 
+ifnz :: [Microprocesador -> Microprocesador] -> Microprocesador -> Microprocesador
+ifnz seriesDeInstrucciones microprocesador | acumuladorA microprocesador == 0 = microprocesador
+                                           | otherwise = foldl (flip ejecutar) microprocesador (seriesDeInstrucciones)
 
 fp20 = Microprocesador {memoria = [],
-			instrucciones = [lodv 3,swap]
+			                  instrucciones = [lodv 3,swap],
                         acumuladorA = 7,
                         acumuladorB = 24,
                         programCounter = 0,
@@ -181,3 +180,44 @@ fp20 = Microprocesador {memoria = [],
                        }
 
 
+--- 3.4 Punto 4: Depuración de un programa
+
+
+
+--- 3.5 Punto 5: Memoria ordenada
+
+estaOrdenada :: Microprocesador -> Bool
+estaOrdenada microprocesador = ordenada (memoria microprocesador)
+ordenada :: Posiciones -> Bool
+ordenada memoria | memoria == [] = False
+                 | tail memoria == [] = True
+                 | head memoria > (head.tail) memoria = False
+                 | otherwise = ordenada (tail memoria)
+
+at8086 = Microprocesador {memoria = [1..20],
+                          instrucciones = [],
+                          acumuladorA = 7,
+                          acumuladorB = 24,
+                          programCounter = 0,
+                          mensajeError = ""
+                        }
+
+microDesorden = Microprocesador {memoria = [2,5,1,0,6,9],
+                                instrucciones = [],
+                                acumuladorA = 0,
+                                acumuladorB = 0, 
+                                programCounter = 0,
+                                mensajeError = ""
+                        }
+
+--- 3.6 Punto 6: Memoria infinita
+
+xt9000 = Microprocesador {memoria = [0..],
+			  instrucciones = [lodv 10,swap,lodv 22,add],
+                          acumuladorA = 0,
+                          acumuladorB = 0,
+                          programCounter = 0,
+                          mensajeError = ""
+                         } 
+
+-- ¿Qué sucede al querer cargar y ejecutar el programa que suma 10 y 22 en el procesador con memoria infinita?
