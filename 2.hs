@@ -24,12 +24,12 @@ data Microprocessor = Microprocessor {
 --     programCounter = 0,
 --     lastErrorMessage = ""
 -- }
-{- 3.2.2.* -}
+{- 3.2.2. -}
+execute :: (Microprocessor -> Microprocessor) -> Microprocessor -> Microprocessor
+execute operation microprocessor | lastErrorMessage microprocessor /= "" = microprocessor
+                                 | otherwise = (operation.nop) microprocessor
 -- foldl (flip execute) microprocessor (instructionMemory microprocessor)
 {- 3.3.3. -}
-{- 3.4.4. -}
-debug microprocessor = microprocessor {instructionMemory = debug1 (instructionMemory microprocessor)}
-debug1 instructionMemory |
-                         |
-{- 3.5.5. -}
-{- 3.6.6. -}
+ifnz :: [Microprocessor -> Microprocessor] -> Microprocessor -> Microprocessor
+ifnz instructionSeries microprocessor | accumulatorA microprocessor == 0 = microprocessor
+                                      | otherwise = foldl (flip execute) microprocessor (instructionSeries)
