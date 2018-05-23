@@ -33,6 +33,13 @@ execute operation microprocessor | lastErrorMessage microprocessor /= "" = micro
 ifnz :: [Microprocessor -> Microprocessor] -> Microprocessor -> Microprocessor
 ifnz instructionSeries microprocessor | accumulatorA microprocessor == 0 = microprocessor
                                       | otherwise = foldl (flip execute) microprocessor (instructionSeries)
+{- 3.4.4.* -}
+debug microprocessor = filter debug1 (instructionMemory microprocessor)
+debug1 operation | accumulatorA (execute operation xt8088) == 0 = False
+                 | accumulatorB (execute operation xt8088) == 0 = False
+                 | dataMemory (execute operation xt8088) == [] = False
+                 | head (dataMemory (execute operation xt8088)) == 0 = False
+                 | otherwise = True
 {- 3.5.5. -}
 ordered :: Microprocessor -> Bool
 ordered microprocessor = ordered1 (dataMemory microprocessor)
@@ -41,3 +48,4 @@ ordered1 dataMemory | dataMemory == [] = False
                     | tail dataMemory == [] = True
                     | head dataMemory > (head.tail) dataMemory = False
                     | otherwise = ordered1 (tail dataMemory)
+{- 3.6.6. -}
