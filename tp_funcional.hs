@@ -3,19 +3,23 @@
 -- 3.1 Punto 1: Modelar micro 
 
 -- 3.1.1 Modelar el tipo de dato microprocesador.
- 
+import Text.Show.Functions 
 
 type Posiciones = [Int]
 
 data Microprocesador = Microprocesador {memoria :: Posiciones,
+					instrucciones :: [Microprocesador -> Microprocesador],
                                         acumuladorA :: Int,
                                         acumuladorB :: Int,
                                         programCounter :: Int,
                                         mensajeError :: String
-                                       } deriving Show
+                                       } deriving (Show)
+
+
 
  -- 3.1.2
 
+{-
 xt8088 = Microprocesador {memoria = [],
                           acumuladorA = 0,
                           acumuladorB = 0,
@@ -23,7 +27,7 @@ xt8088 = Microprocesador {memoria = [],
                           mensajeError = ""
                          }
 
- 
+-} 
 
 -- 3.2 Punto 2
 
@@ -115,13 +119,14 @@ Microprocesador {memoria = [2,0], acumuladorA = 2, acumuladorB = 0, programCount
 Todas las capturas se encuentran en un archivo llamado casos_de_prueba.docx
 -}
 
-fp20 = Microprocesador {memoria = [],
+{-fp20 = Microprocesador {memoria = [],
                         acumuladorA = 7,
                         acumuladorB = 24,
                         programCounter = 0,
                         mensajeError = ""
                        }
 
+-}
 
 at8086 = Microprocesador {memoria = [1..20],
                           acumuladorA = 7,
@@ -132,10 +137,47 @@ at8086 = Microprocesador {memoria = [1..20],
  
 
  
+-- Entrega 2 
+
+--3.1 Punto 1: Carga de un programa
+
+--Agregamos un registro en el data para las instrucciones
+
+-- Representar la suma de 10 y 22
+
+xt8088 = Microprocesador {memoria = [],
+			  instrucciones = [lodv 10,swap,lodv 22,add],
+                          acumuladorA = 0,
+                          acumuladorB = 0,
+                          programCounter = 0,
+                          mensajeError = ""
+                         } 
+
+-- Representar la división de 2 por 0
+
+xt8088 = Microprocesador {memoria = [],
+			  instrucciones = [str 1 2,str 2 0,lod 2,swap,lod 1,div],
+                          acumuladorA = 0,
+                          acumuladorB = 0,
+                          programCounter = 0,
+                          mensajeError = ""
+                         } 
 
  
+-- 3.2 Punto 2: Ejecución de un programa.
 
- 
+-- Hicimos para la primera entrega la funcion ejecutar
 
- 
+
+--- 3.3 Punto 3: IFNZ
+
+
+fp20 = Microprocesador {memoria = [],
+			instrucciones = [lodv 3,swap]
+                        acumuladorA = 7,
+                        acumuladorB = 24,
+                        programCounter = 0,
+                        mensajeError = ""
+                       }
+
 
