@@ -46,4 +46,4 @@ televidente(aye).
 televidenteResponsable(Persona):- not(leSpoileo(Persona,D,E)).
 televidenteResponsable(Persona):- televidente(Persona),not(leSpoileo(Persona,E,F)).
 /* 6 */
-vieneZafando(Persona,Serie):- not(leSpoileo(X,Persona,Serie)).
+vieneZafando(Persona,Serie):- not(leSpoileo(G,Persona,Serie)).
