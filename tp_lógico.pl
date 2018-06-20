@@ -44,6 +44,6 @@ televidente(maiu).
 televidente(gaston).
 televidente(aye).
 televidenteResponsable(Persona):- not(leSpoileo(Persona,D,E)).
-televidenteResponsable(Persona):- televidente(Persona),not(leSpoileo(Persona,E,F)).
+televidenteResponsable(Persona):- televidente(Persona),not(leSpoileo(Persona,D,E)).
 /* 6 */
-vieneZafando(Persona,Serie):- not(leSpoileo(G,Persona,Serie)).
+vieneZafando(Persona,Serie):- not(leSpoileo(F,Persona,Serie)).
