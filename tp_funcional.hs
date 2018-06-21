@@ -178,13 +178,6 @@ memoriaVaciaOCero [] = True
 memoriaVaciaOCero (x:xs) = (x == 0) && (memoriaVaciaOCero xs)
 
 
-{-
-sacarInnecesarias operacion | acumuladorA (ejecutar operacion microprocesador) == 0 = False
-                            | acumuladorB (ejecutar operacion microprocesador) == 0 = False
-                            | memoria (ejecutar operacion microprocesador) == [] = False
-                            | head (memoria (ejecutar operacion microprocesador)) == 0 = False
-                            | otherwise = True
--}
 
 --- 3.5 Punto 5: Memoria ordenada
 
