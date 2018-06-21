@@ -8,7 +8,7 @@ import Text.Show.Functions
 type Posiciones = [Int]
 
 data Microprocesador = Microprocesador {memoria :: Posiciones,
-					                              instrucciones :: [Microprocesador -> Microprocesador],
+					instrucciones :: [Microprocesador -> Microprocesador],
                                         acumuladorA :: Int,
                                         acumuladorB :: Int,
                                         programCounter :: Int,
@@ -19,31 +19,21 @@ data Microprocesador = Microprocesador {memoria :: Posiciones,
 
  -- 3.1.2
 
-{-
-xt8088 = Microprocesador {memoria = [],
-                          acumuladorA = 0,
-                          acumuladorB = 0,
-                          programCounter = 0,
-                          mensajeError = ""
-                         }
-
--} 
-
 -- 3.2 Punto 2
 
 -- 3.2.1
 
 
 ejecutar :: (Microprocesador -> Microprocesador) -> Microprocesador -> Microprocesador
-ejecutar operacion microprocesador| mensajeError microprocesador /= "" = microprocesador
-                                  | otherwise = (operacion.nopR) microprocesador
+ejecutar operacion microprocesador| (/="") (mensajeError microprocesador) = microprocesador
+                                  | otherwise = (operacion.nop) microprocesador
 
-
-nop :: Microprocesador -> Microprocesador
-nop = id
 
 nopR :: Microprocesador -> Microprocesador
-nopR microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
+nopR = id
+
+nop :: Microprocesador -> Microprocesador
+nop microprocesador = microprocesador {programCounter =((+1).programCounter) microprocesador}
 
 
 {- 3.2.2 Desde la consola, modele un programa que haga avanzar tres posiciones el program counter.
@@ -101,7 +91,7 @@ str direccion valor microprocesador = microprocesador {memoria = guardarValorEnP
 
 sacarElementoPosicion :: Int -> Posiciones -> Int
 sacarElementoPosicion direccion memoria | null(memoria) = 0
-                                     	  | otherwise = memoria !! (direccion - 1)
+                                     	| otherwise = memoria !! (direccion - 1)
 
 
 lod :: Int -> Microprocesador -> Microprocesador
@@ -120,14 +110,6 @@ Microprocesador {memoria = [2,0], acumuladorA = 2, acumuladorB = 0, programCount
 Todas las capturas se encuentran en un archivo llamado casos_de_prueba.docx
 -}
 
-{-fp20 = Microprocesador {memoria = [],
-                        acumuladorA = 7,
-                        acumuladorB = 24,
-                        programCounter = 0,
-                        mensajeError = ""
-                       }
-
--}
 
  
 
@@ -138,25 +120,27 @@ Todas las capturas se encuentran en un archivo llamado casos_de_prueba.docx
 
 --Agregamos un registro en el data para las instrucciones
 
--- Representar la suma de 10 y 22
+{- Representar la suma de 10 y 22-}
 
 xt8088 = Microprocesador {memoria = [],
-			                    instrucciones = [lodv 10,swap,lodv 22,add],
+			  instrucciones = [lodv 10,swap,lodv 22,add],
                           acumuladorA = 0,
                           acumuladorB = 0,
                           programCounter = 0,
                           mensajeError = ""
                          } 
+
 
 -- Representar la división de 2 por 0
 
+
 {-xt8088 = Microprocesador {memoria = [],
-			                    instrucciones = [str 1 2,str 2 0,lod 2,swap,lod 1,div],
-                          acumuladorA = 0,
-                          acumuladorB = 0,
-                          programCounter = 0,
-                          mensajeError = ""
-                         } 
+			    instrucciones = [str 1 2,str 2 0,lod 2,swap,lod 1,div],
+                            acumuladorA = 0,
+                            acumuladorB = 0,
+                            programCounter = 0,
+                            mensajeError = ""
+                           } 
 
 -}
  
@@ -168,11 +152,12 @@ xt8088 = Microprocesador {memoria = [],
 --- 3.3 Punto 3: IFNZ
 
 ifnz :: [Microprocesador -> Microprocesador] -> Microprocesador -> Microprocesador
-ifnz seriesDeInstrucciones microprocesador | acumuladorA microprocesador == 0 = microprocesador
+ifnz seriesDeInstrucciones microprocesador | (==0) (acumuladorA microprocesador) = microprocesador
                                            | otherwise = foldl (flip ejecutar) microprocesador (seriesDeInstrucciones)
 
+
 fp20 = Microprocesador {memoria = [],
-			                  instrucciones = [lodv 3,swap],
+			instrucciones = [lodv 3,swap],
                         acumuladorA = 7,
                         acumuladorB = 24,
                         programCounter = 0,
@@ -182,22 +167,34 @@ fp20 = Microprocesador {memoria = [],
 
 --- 3.4 Punto 4: Depuración de un programa
 
-depurar microprocesador = filter sacarInnecesarias (instrucciones microprocesador)
+depurar:: Microprocesador -> [Microprocesador -> Microprocesador]
+depurar microprocesador = filter (sacarInnecesarias microprocesador) (instrucciones microprocesador)
+
+sacarInnecesarias microprocesador operacion = (acumuladorEstaEnCero acumuladorA operacion microprocesador) && (acumuladorEstaEnCero acumuladorB operacion microprocesador) && (memoriaVaciaOCero (memoria (ejecutar operacion microprocesador)))
+
+acumuladorEstaEnCero acumulador operacion microprocesador = (==0) (acumulador (ejecutar operacion microprocesador))
+
+memoriaVaciaOCero [] = True
+memoriaVaciaOCero (x:xs) = (x == 0) && (memoriaVaciaOCero xs)
+
+
+{-
 sacarInnecesarias operacion | acumuladorA (ejecutar operacion microprocesador) == 0 = False
                             | acumuladorB (ejecutar operacion microprocesador) == 0 = False
                             | memoria (ejecutar operacion microprocesador) == [] = False
                             | head (memoria (ejecutar operacion microprocesador)) == 0 = False
                             | otherwise = True
+-}
 
 --- 3.5 Punto 5: Memoria ordenada
 
 estaOrdenada :: Microprocesador -> Bool
 estaOrdenada microprocesador = ordenada (memoria microprocesador)
-ordenada :: Posiciones -> Bool
-ordenada memoria | memoria == [] = False
-                 | tail memoria == [] = True
-                 | head memoria > (head.tail) memoria = False
-                 | otherwise = ordenada (tail memoria)
+
+ordenada :: [Int] -> Bool
+ordenada [] = True
+ordenada [x] = True
+ordenada (x:y:ys) = x <= y && ordenada (y:ys)
 
 at8086 = Microprocesador {memoria = [1..20],
                           instrucciones = [],
