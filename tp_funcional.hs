@@ -144,16 +144,16 @@ xt8088 = Microprocesador {memoria = [],
 
 -}
  
--- 3.2 Punto 2: Ejecución de un programa.
-
--- Hicimos para la primera entrega la funcion ejecutar
-
+{- 3.2.2 -}
+efectuar :: [Microprocesador -> Microprocesador] -> Microprocesador -> Microprocesador
+efectuar programa microprocesador = foldl (flip ejecutar) microprocesador programa
+-- efectuar (instrucciones microprocesador) microprocesador
 
 --- 3.3 Punto 3: IFNZ
 
 ifnz :: [Microprocesador -> Microprocesador] -> Microprocesador -> Microprocesador
 ifnz seriesDeInstrucciones microprocesador | (==0) (acumuladorA microprocesador) = microprocesador
-                                           | otherwise = foldl (flip ejecutar) microprocesador (seriesDeInstrucciones)
+                                           | otherwise = efectuar seriesDeInstrucciones  microprocesador 
 
 
 fp20 = Microprocesador {memoria = [],
