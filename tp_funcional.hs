@@ -163,17 +163,11 @@ fp20 = Microprocesador {memoria = [],
                        }
 
 
---- 3.4 Punto 4: Depuración de un programa
-
-depurar:: Microprocesador -> [Microprocesador -> Microprocesador]
-depurar microprocesador = filter (sacarInnecesarias microprocesador) (instrucciones microprocesador)
-
-sacarInnecesarias microprocesador operacion = (acumuladorEstaEnCero acumuladorA operacion microprocesador) && (acumuladorEstaEnCero acumuladorB operacion microprocesador) && (memoriaVaciaOCero (memoria (ejecutar operacion microprocesador)))
-
-acumuladorEstaEnCero acumulador operacion microprocesador = (==0) (acumulador (ejecutar operacion microprocesador))
-
-memoriaVaciaOCero [] = True
-memoriaVaciaOCero (x:xs) = (x == 0) && (memoriaVaciaOCero xs)
+{- 3.4.4 -}
+depurarPrograma :: Microprocesador -> Microprocesador
+depurarPrograma microprocesador = microprocesador {instrucciones = filter ((depurarInstruccion).(flip ejecutar) microprocesador) (instrucciones microprocesador)} 
+depurarInstruccion :: Microprocesador -> Bool
+depurarInstruccion microprocesador = ((== 0).(+ acumuladorA microprocesador).(+ acumuladorB microprocesador)) (sum (memoria microprocesador))
 
 
 
