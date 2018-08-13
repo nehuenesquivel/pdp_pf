@@ -45,21 +45,22 @@ esSpoiler(Serie,Spoiler):- paso(Serie,_,_,Spoiler).
 
 /* 4- */
 leDijoLoQuePaso(Persona1,Persona2,Serie):- leDijo(Persona1,Persona2,Serie,Spoiler),esSpoiler(Serie,Spoiler).
-leSpoileo(Persona1,Persona2,Serie):- leDijoLoQuePaso(Persona1,Persona2,Serie), mira(Persona2,Serie).
-leSpoileo(Persona1,Persona2,Serie):- leDijoLoQuePaso(Persona1,Persona2,Serie), planeaVer(Persona2,Serie).
+laVera(Persona,Serie):- mira(Persona,Serie).
+laVera(Persona,Serie):- planeaVer(Persona,Serie).
+leSpoileo(Persona1,Persona2,Serie):- leDijoLoQuePaso(Persona1,Persona2,Serie), laVera(Persona2,Serie).
 
 
 /* 5- */
 persona(juan).
 persona(nico).
-televidenteResponsable(Persona):- persona(Persona), not(leSpoileo(Persona,_,_).
+televidenteResponsable(Persona):- persona(Persona), not(leSpoileo(Persona,_,_)).
 
 
 /* 6- */
-vieneZafando(Persona,Serie):- mira(Persona,Serie), not(leSpoileo(_,Persona,Serie)),popular(Serie).
-vieneZafando(Persona,Serie):- planeaVer(Persona,Serie), not(leSpoileo(_,Persona,Serie)),popular(Serie).
-vieneZafando(Persona,Serie):- mira(Persona,Serie), not(leSpoileo(_,Persona,Serie)),pasaronCosasFuertes(Serie).
-vieneZafando(Persona,Serie):- planeaVer(Persona,Serie), not(leSpoileo(_,Persona,Serie)),pasaronCosasFuertes(Serie).
+laVeraSinSpoileada(Persona,Serie):- laVera(Persona,Serie), not(leSpoileo(_,Persona,Serie)).
+vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), popular(Serie).
+vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), pasaronCosasFuertes(Serie).
+
 
 pasaronCosasFuertes(Serie):- paso(Serie,_,_,muerte(_)).
 pasaronCosasFuertes(Serie):- paso(Serie,_,_,relacion(amorosa,_,_)).
