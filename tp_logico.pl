@@ -67,3 +67,14 @@ pasaronCosasFuertes(Serie):- paso(Serie,_,_,relacion(amorosa,_,_)).
 pasaronCosasFuertes(Serie):- paso(Serie,_,_,relacion(parentesco,_,_)).
 
 
+
+
+/* 2 */
+paso(got,3,2,plotTwist([suenio,sinPiernas])).
+paso(got,3,12,plotTwist([fuego,boda])).
+paso(sc,9,9,plotTwist([suenio,coma,sinPiernas])).
+paso(drHouse,8,7,plotTwist([coma,pastillas])).
+
+fuerte(paso(_,_,_,muerte(_))).
+fuerte(paso(_,_,_,relacion(parentesco,_,_))).
+fuerte(paso(_,_,_,relacion(amorosa,_,_))).
