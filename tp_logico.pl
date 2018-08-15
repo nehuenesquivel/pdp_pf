@@ -44,6 +44,8 @@ paso(got, 3, 12, plotTwist([fuego,boda])).
 paso(supercampeones, 9, 9, plotTwist([suenio,coma,sinPiernas])).
 paso(drHouse, 8, 7, plotTwist([coma,pastillas])).
 
+
+
 %leDijo/4
 leDijo(gaston, maiu, got, relacion(amistad, tyrion, dragon)).
 leDijo(nico, maiu, starWars, relacion(parentesco, vader, luke)).
@@ -76,6 +78,7 @@ televidenteResponsable(Persona):- persona(Persona), not(leSpoileo(Persona,_,_)).
 laVeraSinSpoileada(Persona,Serie):- laVera(Persona,Serie), not(leSpoileo(_,Persona,Serie)).
 vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), popular(Serie).
 vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), fuerte(Serie).
+
 
 
 esCliche(Serie):- serie(Serie).
@@ -114,3 +117,7 @@ amigoDelAmigo(Persona1,Persona2):- amigo(Persona1,Persona2).
 amigoDelAmigo(Persona1,Persona2):- amigo(Persona1,OtraPersona), amigoDelAmigo(OtraPersona,Persona2).
 fullSpoil(Persona1,Persona2):- leSpoileo(Persona1,Persona2,_).
 fullSpoil(Persona1,Persona2):- leSpoileo(Persona1,OtraPersona,_), amigoDelAmigo(OtraPersona,Persona2), Persona1 \= Persona2.
+
+
+
+
