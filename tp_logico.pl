@@ -97,9 +97,12 @@ malaGente(Persona1):- persona(Persona2), leSpoileo(Persona1,Persona2,Serie), not
 
 
 /* 2-*/
-
-/* cambiar fuerte(Serie) */
-
+esFuerte(Serie):- paso(Serie,_,_,muerte(_)).
+esFuerte(Serie):- paso(Serie,_,_,relacion(amorosa,_,_)).
+esFuerte(Serie):- paso(Serie,_,_,relacion(parentesco,_,_)).
+esFuerte(Serie):- paso(Serie,_,Capitulo,plotTwist(Lista))),not(esCliche(Serie,Lista)),episodios(Serie,_,Capitulo).
+esCliche(_,[]).
+esCliche(Serie1,[Cabecera|Cola]):- paso(Serie2,_,_,plotTwist(Lista))),Serie1\=Serie2,member(Cabecera,Lista),esCliche(Serie1,Cola).
 
 /* 3-*/
 
