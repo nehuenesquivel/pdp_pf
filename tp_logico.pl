@@ -80,14 +80,6 @@ vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), popular(Serie).
 vieneZafando(Persona,Serie):- laVeraSinSpoileada(Persona,Serie), fuerte(Serie).
 
 
-
-esCliche(Serie):- serie(Serie).
-fuerte(Serie):- paso(Serie,_,_,muerte(_)).
-fuerte(Serie):- paso(Serie,_,_,relacion(amorosa,_,_)).
-fuerte(Serie):- paso(Serie,_,_,relacion(parentesco,_,_)).
-fuerte(Serie):- serie(Serie), not(esCliche(Serie)), paso(Serie, Temporada, Episodios, plotTwist_),episodios(Serie,Temporada,Episodios).
-
-
 /**Entrega 2 **/
 
 /* 1-*/
